@@ -9,8 +9,6 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import kotlin.jvm.JvmInline
 import kotlin.math.floor
-import kotlin.math.log10
-import kotlin.math.pow
 
 typealias StringSemVer = @Serializable(SemanticVersion.Serialiser::class) SemanticVersion
 typealias DoubleSemVer = @Serializable(SemanticVersion.DoubleSerialiser::class) SemanticVersion
@@ -131,9 +129,9 @@ public value class SemanticVersion(private val version: Int) : Comparable<Semant
 
         public fun fromDouble(version: Double): SemanticVersion {
             val major = floor(version).toInt()
-            val version = (version - major) * 10.0
-            val minor = floor(version).toInt()
-            val patch = floor((version - minor) * 10.0).toInt()
+            val version = (version * 100).toInt()
+            val minor = version / 10 % 10
+            val patch = version % 10
 
             return SemanticVersion(major, minor, patch)
         }
@@ -155,7 +153,7 @@ public value class SemanticVersion(private val version: Int) : Comparable<Semant
             PrimitiveSerialDescriptor("dev.brella.ktornea.spotify.data.SemanticVersionDouble", PrimitiveKind.DOUBLE)
 
         override fun serialize(encoder: Encoder, value: SemanticVersion) =
-            encoder.encodeDouble((value.major) + (value.minor / 10.0) + (value.patch / 100.0))
+            encoder.encodeDouble(((value.major * 100) + (value.minor * 10) + (value.patch)) / 100.0)
 
         override fun deserialize(decoder: Decoder): SemanticVersion =
             fromDouble(decoder.decodeDouble())

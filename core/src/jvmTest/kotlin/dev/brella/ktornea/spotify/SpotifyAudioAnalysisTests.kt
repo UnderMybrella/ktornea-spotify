@@ -1,7 +1,10 @@
 package dev.brella.ktornea.spotify
 
+import dev.brella.kornea.errors.common.doOnFailure
+import dev.brella.kornea.errors.common.getOrThrow
 import dev.brella.kornea.errors.common.map
 import dev.brella.ktornea.spotify.data.auth.submitSpotifyClientCredentialsFlow
+import dev.brella.ktornea.spotify.data.tracks.analysis.SpotifyAudioAnalysis
 import dev.brella.ktornea.spotify.data.tracks.analysis.SpotifyAudioAnalysisMeta
 import dev.brella.ktornea.spotify.data.tracks.analysis.SpotifyAudioAnalysisTrack
 import io.ktor.client.*
@@ -21,9 +24,16 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.decodeFromJsonElement
+import org.junit.jupiter.api.TestInstance
 import kotlin.test.Test
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class SpotifyAudioAnalysisTests {
+    val json = Json {
+        prettyPrint = true
+        ignoreUnknownKeys = true
+    }
+
     private val client = HttpClient(CIO) {
         install(ContentEncoding) {
             gzip()
@@ -32,7 +42,7 @@ class SpotifyAudioAnalysisTests {
         }
 
         install(ContentNegotiation) {
-            json()
+            json(json)
         }
 
         install(HttpTimeout) {
@@ -53,12 +63,18 @@ class SpotifyAudioAnalysisTests {
         install(Auth) {
             bearer {
                 refreshTokens {
-                    client.submitSpotifyClientCredentialsFlow(
-                        System.getenv("CLIENT_ID"),
-                        System.getenv("CLIENT_SECRET")
-                    ) { markAsRefreshTokenRequest() }
-                        .map { (accessToken) -> BearerTokens(accessToken, "") }
-                        .getOrNull()
+                    try {
+                        client.submitSpotifyClientCredentialsFlow(
+                            System.getenv("SPOTIFY_CLIENT_ID"),
+                            System.getenv("SPOTIFY_CLIENT_SECRET")
+                        ) { markAsRefreshTokenRequest() }
+                            .map { (accessToken) -> BearerTokens(accessToken, "") }
+                            .getOrThrow()
+                    } catch (th: Throwable) {
+                        th.printStackTrace()
+
+                        null
+                    }
                 }
 
                 sendWithoutRequest { request -> request.url.host == "api.spotify.com" }
@@ -74,27 +90,21 @@ class SpotifyAudioAnalysisTests {
 
     @Test
     fun testMeta() = runBlocking {
-        val json = Json {
-            prettyPrint = true
-            ignoreUnknownKeys = true
-        }
-
         arrayOf(
             "11dFghVXANMlKmJXsNCbNl",
             "03xB2RaR17TyaR7tAfOYde",
             "2zpQSMe7xEFeSdGNoFLWl8",
             "2fAIfPLrPUTW1AmJRR428Q",
             "5ICLsHla4t5dReobgkL5vA",
-            "4TO5chEVULiyd3o0F7mHp0"
+            "4TO5chEVULiyd3o0F7mHp0",
+            "7wHpjhpBhiabSKRPJgO2im"
         )
             .forEach { id ->
-                val meta = json.decodeFromJsonElement<SpotifyAudioAnalysisTrack>(
+                val analysis =
                     client.get("https://api.spotify.com/v1/audio-analysis/$id")
-                        .body<JsonObject>()
-                        .getValue("track")
-                )
+                        .body<SpotifyAudioAnalysis>()
 
-                println(json.encodeToString(meta))
+                println(json.encodeToString(analysis.))
             }
 
     }

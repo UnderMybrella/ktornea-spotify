@@ -92,9 +92,38 @@ data class SpotifyAudioAnalysisTrack(
     @SerialName("mode_confidence")
     val modeConfidence: Double,
 
+    /** An [Echo Nest Musical Fingerprint (ENMFP)](https://academiccommons.columbia.edu/doi/10.7916/D8Q248M4) code string for this track. */
     @SerialName("codestring")
     val codeString: String,
 
+    /** A version number for the [Echo Nest Musical Fingerprint](https://academiccommons.columbia.edu/doi/10.7916/D8Q248M4) format used in the [code string][codeString] field. */
     @SerialName("code_version")
-    val codeVersionRaw: DoubleSemVer
+    val codeVersion: DoubleSemVer,
+
+    /** An [EchoPrint](https://github.com/spotify/echoprint-codegen) code string for this track. */
+    @SerialName("echoprintstring")
+    val echoprintString: String,
+
+    /** A version number for the [EchoPrint](https://github.com/spotify/echoprint-codegen) format used in the [echoprint string][echoprintString] field. */
+    @SerialName("echoprint_version")
+    val echoprintVersion: DoubleSemVer,
+
+    /** A [Synchstring](https://github.com/echonest/synchdata) for this track. */
+    //TODO: Implement this!!
+    @SerialName("synchstring")
+    val synchronisationString: String,
+
+    /** A version number for the [Synchstring](https://github.com/echonest/synchdata) used in the [synch string][synchronisationString] field. */
+    @SerialName("synch_version")
+    val synchronisationVersion: DoubleSemVer,
+
+    /** A Rhythmstring for this track. The format of this string is similar to the [Synchstring](https://github.com/echonest/synchdata).
+     *  NB. There was never a *lot* of documentation or use for this from the looks of it, but the AnalyzeDocumentation is described as such:
+     *  "With Analyzer v3.2 was introduce the rhythmstring, a binary representation of rhythmic impulses, or transients, over 8 frequency channels" */
+    @SerialName("rhythmstring")
+    val rhythmString: String,
+
+    /** A version number for the Rhythmstring used in the [rhythm string][rhythmString] field. */
+    @SerialName("rhythm_version")
+    val rhythmVersion: DoubleSemVer
 )
