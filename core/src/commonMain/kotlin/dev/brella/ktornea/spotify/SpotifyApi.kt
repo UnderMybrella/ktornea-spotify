@@ -18,7 +18,7 @@ import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 
-class SpotifyApi(val client: HttpClient, val apiUrl: String = "https://api.spotify.com/v1") : SpotifyService {
+public class SpotifyApi(public val client: HttpClient, public val apiUrl: String = "https://api.spotify.com/v1") : SpotifyService {
     private inline fun HttpRequestBuilder.setup() {
         header(
             HttpHeaders.UserAgent,

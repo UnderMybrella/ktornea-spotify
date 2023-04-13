@@ -15,5 +15,6 @@ defineVersions {
     kotlinxSerialisation("1.5.0")
 
     korneaErrors("3.1.0-alpha")
+    korneaAnnotations("1.4.0-alpha")
     "ktornea-client-results" .. "1.2.0-alpha"
 }

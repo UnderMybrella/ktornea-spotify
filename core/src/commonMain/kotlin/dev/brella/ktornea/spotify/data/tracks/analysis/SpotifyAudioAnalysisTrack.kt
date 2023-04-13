@@ -8,7 +8,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class SpotifyAudioAnalysisTrack(
+public data class SpotifyAudioAnalysisTrack(
     /** The exact number of audio samples analyzed from this track. See also [analysisSampleRate]. */
     @SerialName("num_samples")
     val numberOfSamples: Long,

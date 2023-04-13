@@ -104,7 +104,7 @@ class SpotifyAudioAnalysisTests {
                     client.get("https://api.spotify.com/v1/audio-analysis/$id")
                         .body<SpotifyAudioAnalysis>()
 
-                println(json.encodeToString(analysis.))
+                println(json.encodeToString(analysis.sections))
             }
 
     }

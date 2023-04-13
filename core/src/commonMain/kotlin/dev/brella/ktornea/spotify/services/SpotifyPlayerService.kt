@@ -1,4 +1,4 @@
 package dev.brella.ktornea.spotify.services
 
-interface SpotifyPlayerService {
+public interface SpotifyPlayerService {
 }

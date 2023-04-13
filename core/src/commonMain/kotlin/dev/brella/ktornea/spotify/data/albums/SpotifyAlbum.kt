@@ -7,7 +7,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class SpotifyAlbum(
+public data class SpotifyAlbum(
     @SerialName("album_type")
     val albumType: String,
     @SerialName("total_tracks")

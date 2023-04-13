@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class SpotifyArtist(
+public data class SpotifyArtist(
     @SerialName("external_urls")
     val externalUrls: SpotifyExternalUrls,
     val followers: SpotifyArtistFollowers? = null,

@@ -3,7 +3,7 @@ package dev.brella.ktornea.spotify.data
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class SpotifyPaginatedData<T>(
+public data class SpotifyPaginatedData<T>(
     val href: String,
     val previous: String,
     val next: String,

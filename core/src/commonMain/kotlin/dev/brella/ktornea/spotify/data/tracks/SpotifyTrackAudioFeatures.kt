@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class SpotifyTrackAudioFeatures(
+public data class SpotifyTrackAudioFeatures(
     @SerialName("audio_features")
     val audioFeatures: List<SpotifyTrackAudioFeature>,
 )

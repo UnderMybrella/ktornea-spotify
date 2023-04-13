@@ -12,7 +12,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class SpotifyClientCredentials(
+public data class SpotifyClientCredentials(
     @SerialName("access_token")
     val accessToken: String,
 

@@ -5,7 +5,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class SpotifyTrack(
+public data class SpotifyTrack(
     /** The album on which the track appears.
      *  The album object includes a link in href to full information about the album. */
     val album: SpotifyAlbum,

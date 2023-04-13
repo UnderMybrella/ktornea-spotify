@@ -10,8 +10,8 @@ import kotlinx.serialization.encoding.Encoder
 import kotlin.jvm.JvmInline
 import kotlin.math.floor
 
-typealias StringSemVer = @Serializable(SemanticVersion.Serialiser::class) SemanticVersion
-typealias DoubleSemVer = @Serializable(SemanticVersion.DoubleSerialiser::class) SemanticVersion
+public typealias StringSemVer = @Serializable(SemanticVersion.Serialiser::class) SemanticVersion
+public typealias DoubleSemVer = @Serializable(SemanticVersion.DoubleSerialiser::class) SemanticVersion
 
 /*
  * Copyright 2010-2018 JetBrains s.r.o. and Kotlin Programming Language contributors.
@@ -141,7 +141,7 @@ public value class SemanticVersion(private val version: Int) : Comparable<Semant
         override val descriptor: SerialDescriptor =
             PrimitiveSerialDescriptor("dev.brella.ktornea.spotify.data.SemanticVersion", PrimitiveKind.STRING)
 
-        override fun serialize(encoder: Encoder, value: SemanticVersion) =
+        override fun serialize(encoder: Encoder, value: SemanticVersion): Unit =
             encoder.encodeString(value.toString())
 
         override fun deserialize(decoder: Decoder): SemanticVersion =
@@ -152,7 +152,7 @@ public value class SemanticVersion(private val version: Int) : Comparable<Semant
         override val descriptor: SerialDescriptor =
             PrimitiveSerialDescriptor("dev.brella.ktornea.spotify.data.SemanticVersionDouble", PrimitiveKind.DOUBLE)
 
-        override fun serialize(encoder: Encoder, value: SemanticVersion) =
+        override fun serialize(encoder: Encoder, value: SemanticVersion): Unit =
             encoder.encodeDouble(((value.major * 100) + (value.minor * 10) + (value.patch)) / 100.0)
 
         override fun deserialize(decoder: Decoder): SemanticVersion =
