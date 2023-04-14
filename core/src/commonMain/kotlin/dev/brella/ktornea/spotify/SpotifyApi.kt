@@ -6,6 +6,8 @@ import dev.brella.kornea.errors.common.map
 import dev.brella.ktornea.results.deleteResult
 import dev.brella.ktornea.results.getResult
 import dev.brella.ktornea.results.putResult
+import dev.brella.ktornea.results.withPayloadForHttpResult
+import dev.brella.ktornea.spotify.data.SpotifyErrorResponse
 import dev.brella.ktornea.spotify.data.SpotifyPaginatedData
 import dev.brella.ktornea.spotify.data.enums.EnumPitchClass
 import dev.brella.ktornea.spotify.data.tracks.*
@@ -19,7 +21,10 @@ import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 
-public class SpotifyApi(public val client: HttpClient, public val apiUrl: String = "https://api.spotify.com/v1") : SpotifyService {
+public class SpotifyApi(
+    public val client: HttpClient,
+    public val apiUrl: String = "https://api.spotify.com/v1",
+) : SpotifyService {
     private fun HttpRequestBuilder.setup() {
         header(
             HttpHeaders.UserAgent,
@@ -27,12 +32,14 @@ public class SpotifyApi(public val client: HttpClient, public val apiUrl: String
         )
     }
 
-    private suspend inline fun <reified T> KorneaResult<HttpResponse>.mapBody(): KorneaResult<T> =
-        map { response -> response.body<T>() }
+    private suspend inline fun <reified T> KorneaResult<HttpResponse>.mapBodyOrError(): KorneaResult<T> =
+        withPayloadForHttpResult { result -> result.response.body<SpotifyErrorResponse>() }
+            .map { response -> response.body<T>() }
 
 
-    private suspend inline fun <reified T, R> KorneaResult<HttpResponse>.mapBody(transform: (T) -> R): KorneaResult<R> =
-        map { response -> transform(response.body<T>()) }
+    private suspend inline fun <reified T, R> KorneaResult<HttpResponse>.mapBodyOrError(transform: (T) -> R): KorneaResult<R> =
+        withPayloadForHttpResult { result -> result.response.body<SpotifyErrorResponse>() }
+            .map { response -> transform(response.body<T>()) }
 
     // Tracks
     override suspend fun getTrack(id: String, market: String?): KorneaResult<SpotifyTrack> =
@@ -40,7 +47,7 @@ public class SpotifyApi(public val client: HttpClient, public val apiUrl: String
             setup()
 
             parameter("market", market)
-        }.mapBody()
+        }.mapBodyOrError()
 
     override suspend fun getSeveralTracksJoined(idString: String, market: String?): KorneaResult<List<SpotifyTrack>> =
         client.getResult("$apiUrl/tracks") {
@@ -48,7 +55,7 @@ public class SpotifyApi(public val client: HttpClient, public val apiUrl: String
 
             parameter("ids", idString)
             parameter("market", market)
-        }.mapBody(SpotifyTrackCollection::tracks)
+        }.mapBodyOrError(SpotifyTrackCollection::tracks)
 
     override suspend fun getUserSavedTracks(
         offset: Int?,
@@ -61,7 +68,7 @@ public class SpotifyApi(public val client: HttpClient, public val apiUrl: String
             parameter("market", market)
             parameter("limit", limit)
             parameter("offset", offset)
-        }.mapBody()
+        }.mapBodyOrError()
 
     override suspend fun saveTracksForCurrentUserJoined(idString: String): KorneaResult<HttpResponse> =
         client.putResult("$apiUrl/me/tracks") {
@@ -82,24 +89,24 @@ public class SpotifyApi(public val client: HttpClient, public val apiUrl: String
             setup()
 
             parameter("ids", idString)
-        }.mapBody()
+        }.mapBodyOrError()
 
     override suspend fun getSeveralTracksAudioFeaturesJoined(idString: String): KorneaResult<List<SpotifyTrackAudioFeature>> =
         client.getResult("$apiUrl/audio-features") {
             setup()
 
             parameter("ids", idString)
-        }.mapBody(SpotifyTrackAudioFeatureCollection::audioFeatures)
+        }.mapBodyOrError(SpotifyTrackAudioFeatureCollection::audioFeatures)
 
     override suspend fun getTrackAudioFeatures(id: String): KorneaResult<SpotifyTrackAudioFeature> =
         client.getResult("$apiUrl/audio-features/$id") {
             setup()
-        }.mapBody()
+        }.mapBodyOrError()
 
     override suspend fun getTrackAudioAnalysis(id: String): KorneaResult<SpotifyTrackAudioAnalysis> =
         client.getResult("$apiUrl/audio-analysis/$id") {
             setup()
-        }.mapBody()
+        }.mapBodyOrError()
 
     override suspend fun getRecommendations(
         limit: Int?,
@@ -148,7 +155,7 @@ public class SpotifyApi(public val client: HttpClient, public val apiUrl: String
         targetTimeSignature: Int?,
         minValence: Double?,
         maxValence: Double?,
-        targetValence: Double?
+        targetValence: Double?,
     ): KorneaResult<SpotifyTrackRecommendationResponse> =
         client.getResult("$apiUrl/recommendations") {
             setup()
@@ -201,5 +208,5 @@ public class SpotifyApi(public val client: HttpClient, public val apiUrl: String
             parameter("min_valence", minValence)
             parameter("max_valence", maxValence)
             parameter("target_valence", targetValence)
-        }.mapBody()
+        }.mapBodyOrError()
 }

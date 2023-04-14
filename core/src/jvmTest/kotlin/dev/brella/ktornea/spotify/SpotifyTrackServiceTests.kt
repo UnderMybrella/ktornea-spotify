@@ -1,11 +1,14 @@
 package dev.brella.ktornea.spotify
 
+import dev.brella.kornea.errors.common.doOnSuccess
 import dev.brella.kornea.errors.common.getOrThrow
 import dev.brella.kornea.errors.common.map
 import dev.brella.ktornea.spotify.data.auth.submitSpotifyClientCredentialsFlow
-import dev.brella.ktornea.spotify.services.getRecommendations
+import dev.brella.ktornea.spotify.data.tracks.SpotifyTrack
+import io.kotest.common.ExperimentalKotest
+import io.kotest.core.spec.style.FunSpec
+import io.kotest.datatest.withData
 import io.ktor.client.*
-import io.ktor.client.call.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.*
 import io.ktor.client.plugins.auth.*
@@ -13,23 +16,18 @@ import io.ktor.client.plugins.auth.providers.*
 import io.ktor.client.plugins.compression.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.plugins.cookies.*
-import io.ktor.client.request.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
-import kotlinx.coroutines.runBlocking
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import org.junit.jupiter.api.TestInstance
-import kotlin.test.Test
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class SpotifyAudioAnalysisTests {
+@OptIn(ExperimentalKotest::class)
+class SpotifyTrackServiceTests : FunSpec({
     val json = Json {
         prettyPrint = true
         ignoreUnknownKeys = true
     }
 
-    private val client = HttpClient(CIO) {
+    val client = HttpClient(CIO) {
         install(ContentEncoding) {
             gzip()
             deflate()
@@ -82,35 +80,20 @@ class SpotifyAudioAnalysisTests {
             userAgent("Ktornea (+https://github.com/UnderMybrella/ktornea)")
         }
     }
+    val api = SpotifyApi(client)
+    failfast = true
 
-    @Test
-    fun testMeta() = runBlocking {
-//        arrayOf(
-//            "11dFghVXANMlKmJXsNCbNl",
-//            "03xB2RaR17TyaR7tAfOYde",
-//            "2zpQSMe7xEFeSdGNoFLWl8",
-//            "2fAIfPLrPUTW1AmJRR428Q",
-//            "5ICLsHla4t5dReobgkL5vA",
-//            "4TO5chEVULiyd3o0F7mHp0",
-//            "7wHpjhpBhiabSKRPJgO2im"
-//        )
-//            .forEach { id ->
-//                val analysis =
-//                    client.get("https://api.spotify.com/v1/audio-analysis/$id")
-//                        .body<SpotifyTrackAudioAnalysis>()
-//
-//                println(json.encodeToString(analysis))
-//            }
+    val trackList = listOf(
+        SpotifyTrackTestData("Gangnam Style", "03UrZgTINDqvnUMbbIMhql", SpotifyTrack::shouldBeGangnamStyle),
+        SpotifyTrackTestData("Call Me Maybe", "20I6sIOMTCkB6w7ryavxtO", SpotifyTrack::shouldBeCallMeMaybe),
+        SpotifyTrackTestData("A Long Fall", "7AMA1BVMMitfR8i7fIUv5U", SpotifyTrack::shouldBeALongFall)
+    )
 
-        val api = SpotifyApi(client)
-        val recommendations = api.getRecommendations {
-            seedTrack("7wHpjhpBhiabSKRPJgO2im")
-            seedGenre("classical")
-            seedArtist("4NHQUGzhtTLFvgF5SZesLK")
-        }.getOrThrow()
-
-        println(json.encodeToString(recommendations))
-
-
+    context("Get Track") {
+        withData(trackList) { (trackName, trackID, test) ->
+            api.getTrack(trackID)
+                .testSuccess("Track should exist")
+                .doOnSuccess(test)
+        }
     }
-}
+})

@@ -7,6 +7,7 @@ plugins {
     kotlin("plugin.serialization")
 
     id("dev.brella.kornea")
+    id("io.kotest.multiplatform")
 }
 
 group = "dev.brella"
@@ -55,13 +56,19 @@ kotlin {
                 implementation(korneaErrorsModule())
                 implementation(korneaAnnotationsModule())
                 implementation("dev.brella:kornea-serialisation-core:2.1.0-alpha")
-                implementation("dev.brella:ktornea-client-results:1.2.0-alpha")
+                implementation(versioned("dev.brella:ktornea-client-results", "ktornea-client-results")) {
+                    exclude("dev.brella", "ktornea-client-core")
+                }
+                implementation(versioned("dev.brella:ktornea-http", "ktornea-http"))
+                implementation(versioned("dev.brella:ktornea-http-serialisation", "ktornea-http-serialisation"))
             }
         }
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test"))
-                implementation("io.kotest:kotest-assertions-core:5.5.5")
+                implementation(versioned("io.kotest:kotest-framework-engine", "kotest"))
+                implementation(versioned("io.kotest:kotest-assertions-core", "kotest"))
+                implementation(versioned("io.kotest:kotest-framework-datatest", "kotest"))
             }
         }
         val jvmMain by getting
@@ -80,12 +87,15 @@ kotlin {
 
                 kotlinxCoroutinesModules {
                     implementation(core())
+                    implementation(test())
                 }
 
                 kotlinxSerialisationModules {
                     implementation(core())
                     implementation(json())
                 }
+
+                implementation(versioned("io.kotest:kotest-runner-junit5", "kotest"))
             }
         }
 //        val jsMain by getting {

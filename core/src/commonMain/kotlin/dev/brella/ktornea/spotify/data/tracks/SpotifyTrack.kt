@@ -1,7 +1,7 @@
 package dev.brella.ktornea.spotify.data.tracks
 
 import dev.brella.ktornea.spotify.data.albums.SpotifyAlbum
-import dev.brella.ktornea.spotify.data.types.EnumSpotifyTrackType
+import dev.brella.ktornea.spotify.data.types.EnumSpotifyTypeOfTrack
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -47,7 +47,7 @@ public data class SpotifyTrack(
     /** Part of the response when [Track Relinking](https://developer.spotify.com/documentation/web-api/concepts/track-relinking) is applied.
      *  If true, the track is playable in the given market. Otherwise false. */
     @SerialName("is_playable")
-    val isPlayable: Boolean = true,
+    val isPlayable: Boolean? = null,
 
     /** Part of the response when [Track Relinking](https://developer.spotify.com/documentation/web-api/concepts/track-relinking) is applied, and the requested track has been replaced with different track.
      *  The track in the linked_from object contains information about the originally requested track. */
@@ -82,7 +82,7 @@ public data class SpotifyTrack(
 
     /** The object type: "track". */
     @Suppress("SERIALIZER_TYPE_INCOMPATIBLE")
-    val type: EnumSpotifyTrackType,
+    val type: EnumSpotifyTypeOfTrack,
 
     /** The Spotify URI for the track. */
     val uri: String,
