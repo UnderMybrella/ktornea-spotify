@@ -1,14 +1,13 @@
 package dev.brella.ktornea.spotify.data.tracks.analysis
 
 import dev.brella.ktornea.spotify.data.DoubleSemVer
-import dev.brella.ktornea.spotify.data.SemanticVersion
 import dev.brella.ktornea.spotify.data.enums.EnumModality
 import dev.brella.ktornea.spotify.data.enums.EnumPitchClass
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-public data class SpotifyAudioAnalysisTrack(
+public data class SpotifyTrackAudioAnalysisDetails(
     /** The exact number of audio samples analyzed from this track. See also [analysisSampleRate]. */
     @SerialName("num_samples")
     val numberOfSamples: Long,

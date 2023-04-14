@@ -1,12 +1,9 @@
 package dev.brella.ktornea.spotify
 
-import dev.brella.kornea.errors.common.doOnFailure
 import dev.brella.kornea.errors.common.getOrThrow
 import dev.brella.kornea.errors.common.map
 import dev.brella.ktornea.spotify.data.auth.submitSpotifyClientCredentialsFlow
-import dev.brella.ktornea.spotify.data.tracks.analysis.SpotifyAudioAnalysis
-import dev.brella.ktornea.spotify.data.tracks.analysis.SpotifyAudioAnalysisMeta
-import dev.brella.ktornea.spotify.data.tracks.analysis.SpotifyAudioAnalysisTrack
+import dev.brella.ktornea.spotify.services.getRecommendations
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.engine.cio.*
@@ -22,8 +19,6 @@ import io.ktor.serialization.kotlinx.json.*
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.decodeFromJsonElement
 import org.junit.jupiter.api.TestInstance
 import kotlin.test.Test
 
@@ -90,22 +85,32 @@ class SpotifyAudioAnalysisTests {
 
     @Test
     fun testMeta() = runBlocking {
-        arrayOf(
-            "11dFghVXANMlKmJXsNCbNl",
-            "03xB2RaR17TyaR7tAfOYde",
-            "2zpQSMe7xEFeSdGNoFLWl8",
-            "2fAIfPLrPUTW1AmJRR428Q",
-            "5ICLsHla4t5dReobgkL5vA",
-            "4TO5chEVULiyd3o0F7mHp0",
-            "7wHpjhpBhiabSKRPJgO2im"
-        )
-            .forEach { id ->
-                val analysis =
-                    client.get("https://api.spotify.com/v1/audio-analysis/$id")
-                        .body<SpotifyAudioAnalysis>()
+//        arrayOf(
+//            "11dFghVXANMlKmJXsNCbNl",
+//            "03xB2RaR17TyaR7tAfOYde",
+//            "2zpQSMe7xEFeSdGNoFLWl8",
+//            "2fAIfPLrPUTW1AmJRR428Q",
+//            "5ICLsHla4t5dReobgkL5vA",
+//            "4TO5chEVULiyd3o0F7mHp0",
+//            "7wHpjhpBhiabSKRPJgO2im"
+//        )
+//            .forEach { id ->
+//                val analysis =
+//                    client.get("https://api.spotify.com/v1/audio-analysis/$id")
+//                        .body<SpotifyTrackAudioAnalysis>()
+//
+//                println(json.encodeToString(analysis))
+//            }
 
-                println(json.encodeToString(analysis.sections))
-            }
+        val api = SpotifyApi(client)
+        val recommendations = api.getRecommendations {
+            seedTrack("7wHpjhpBhiabSKRPJgO2im")
+            seedGenre("classical")
+            seedArtist("4NHQUGzhtTLFvgF5SZesLK")
+        }.getOrThrow()
+
+        println(json.encodeToString(recommendations))
+
 
     }
 }

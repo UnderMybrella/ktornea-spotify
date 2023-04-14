@@ -54,7 +54,7 @@ kotlin {
 
                 implementation(korneaErrorsModule())
                 implementation(korneaAnnotationsModule())
-                implementation("dev.brella:kornea-serialisation-core:2.0.0-alpha")
+                implementation("dev.brella:kornea-serialisation-core:2.1.0-alpha")
                 implementation("dev.brella:ktornea-client-results:1.2.0-alpha")
             }
         }

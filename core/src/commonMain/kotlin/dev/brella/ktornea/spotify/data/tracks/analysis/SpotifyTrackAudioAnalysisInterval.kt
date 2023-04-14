@@ -3,7 +3,7 @@ package dev.brella.ktornea.spotify.data.tracks.analysis
 import kotlinx.serialization.Serializable
 
 @Serializable
-public data class SpotifyAudioAnalysisInterval(
+public data class SpotifyTrackAudioAnalysisInterval(
     /** The starting point (in seconds) of the time interval. */
     val start: Double,
 

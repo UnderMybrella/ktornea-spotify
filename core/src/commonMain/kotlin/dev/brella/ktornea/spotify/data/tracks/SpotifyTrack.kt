@@ -1,6 +1,7 @@
 package dev.brella.ktornea.spotify.data.tracks
 
 import dev.brella.ktornea.spotify.data.albums.SpotifyAlbum
+import dev.brella.ktornea.spotify.data.types.EnumSpotifyTrackType
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -80,10 +81,13 @@ public data class SpotifyTrack(
     val trackNumber: Int,
 
     /** The object type: "track". */
-    val type: String,
+    @Suppress("SERIALIZER_TYPE_INCOMPATIBLE")
+    val type: EnumSpotifyTrackType,
 
-
+    /** The Spotify URI for the track. */
     val uri: String,
+
+    /** Whether or not the track is from a local file. */
     @SerialName("is_local")
     val isLocal: Boolean,
 )

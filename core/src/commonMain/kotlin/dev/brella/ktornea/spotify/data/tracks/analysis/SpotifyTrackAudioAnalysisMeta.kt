@@ -1,12 +1,11 @@
 package dev.brella.ktornea.spotify.data.tracks.analysis
 
-import dev.brella.ktornea.spotify.data.SemanticVersion
 import dev.brella.ktornea.spotify.data.StringSemVer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-public data class SpotifyAudioAnalysisMeta(
+public data class SpotifyTrackAudioAnalysisMeta(
     /** The version of the Analyzer used to analyze this track. */
     @SerialName("analyzer_version")
     val analyserVersion: StringSemVer,
