@@ -49,7 +49,7 @@ public class SpotifyApi(
             parameter("market", market)
         }.mapBodyOrError()
 
-    override suspend fun getSeveralTracksJoined(idString: String, market: String?): KorneaResult<List<SpotifyTrack>> =
+    override suspend fun getSeveralTracksJoined(idString: String, market: String?): KorneaResult<List<SpotifyTrack?>> =
         client.getResult("$apiUrl/tracks") {
             setup()
 
@@ -91,14 +91,14 @@ public class SpotifyApi(
             parameter("ids", idString)
         }.mapBodyOrError()
 
-    override suspend fun getSeveralTracksAudioFeaturesJoined(idString: String): KorneaResult<List<SpotifyTrackAudioFeature>> =
+    override suspend fun getSeveralTracksAudioFeaturesJoined(idString: String): KorneaResult<List<SpotifyTrackAudioFeatures>> =
         client.getResult("$apiUrl/audio-features") {
             setup()
 
             parameter("ids", idString)
         }.mapBodyOrError(SpotifyTrackAudioFeatureCollection::audioFeatures)
 
-    override suspend fun getTrackAudioFeatures(id: String): KorneaResult<SpotifyTrackAudioFeature> =
+    override suspend fun getTrackAudioFeatures(id: String): KorneaResult<SpotifyTrackAudioFeatures> =
         client.getResult("$apiUrl/audio-features/$id") {
             setup()
         }.mapBodyOrError()

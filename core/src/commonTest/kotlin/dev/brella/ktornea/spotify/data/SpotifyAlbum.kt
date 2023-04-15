@@ -1,13 +1,7 @@
 package dev.brella.ktornea.spotify.data
 
 import dev.brella.kornea.base.common.Optional
-import dev.brella.kornea.base.common.empty
 import dev.brella.ktornea.spotify.data.albums.SpotifyAlbum
-import dev.brella.ktornea.spotify.data.albums.SpotifySimplifiedArtist
-import dev.brella.ktornea.spotify.data.tracks.SpotifyExternalUrls
-import dev.brella.ktornea.spotify.data.tracks.SpotifyImage
-import dev.brella.ktornea.spotify.data.tracks.SpotifyRestrictions
-import dev.brella.ktornea.spotify.testIfNotNull
 import dev.brella.ktornea.spotify.testIfNotNullShouldBe
 import dev.brella.ktornea.spotify.testIfPresentShouldBe
 import io.kotest.assertions.assertSoftly

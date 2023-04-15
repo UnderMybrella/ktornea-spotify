@@ -15,9 +15,9 @@ defineVersions {
     kotlinxCoroutines("1.7.0-Beta")
     kotlinxSerialisation("1.5.0")
 
-    korneaErrors("4.0.0-alpha")
-    korneaAnnotations("1.4.0-alpha")
-    "ktornea-client-results" .. "2.0.0-alpha"
+    korneaErrors("4.0.1-alpha")
+    korneaAnnotations("1.4.1-alpha")
+    "ktornea-client-results" .. "2.0.1-alpha"
     "ktornea-http" .. "1.1.0-alpha"
     "ktornea-http-serialisation" .. "1.0.1-alpha"
     "kotest" .. "5.5.5"

@@ -6,7 +6,7 @@ import dev.brella.ktornea.spotify.chunkFlatToResults
 import dev.brella.ktornea.spotify.data.SpotifyPaginatedData
 import dev.brella.ktornea.spotify.data.enums.EnumPitchClass
 import dev.brella.ktornea.spotify.data.tracks.SpotifyTrack
-import dev.brella.ktornea.spotify.data.tracks.SpotifyTrackAudioFeature
+import dev.brella.ktornea.spotify.data.tracks.SpotifyTrackAudioFeatures
 import dev.brella.ktornea.spotify.data.tracks.SpotifyTrackRecommendationBuilder
 import dev.brella.ktornea.spotify.data.tracks.SpotifyTrackRecommendationResponse
 import dev.brella.ktornea.spotify.data.tracks.analysis.SpotifyTrackAudioAnalysis
@@ -15,22 +15,22 @@ import io.ktor.client.statement.*
 public interface SpotifyTrackService {
     public suspend fun getTrack(id: String, market: String? = null): KorneaResult<SpotifyTrack>
 
-    public suspend fun getSeveralTracks(vararg ids: String): KorneaResult<List<SpotifyTrack>> =
+    public suspend fun getSeveralTracks(vararg ids: String): KorneaResult<List<SpotifyTrack?>> =
         ids.chunkFlatToResults(50) { chunk -> getSeveralTracksJoined(chunk.joinToString(",")) }
 
-    public suspend fun getSeveralTracks(market: String? = null, vararg ids: String): KorneaResult<List<SpotifyTrack>> =
+    public suspend fun getSeveralTracks(market: String? = null, vararg ids: String): KorneaResult<List<SpotifyTrack?>> =
         ids.chunkFlatToResults(50) { chunk -> getSeveralTracksJoined(chunk.joinToString(","), market) }
 
     public suspend fun getSeveralTracks(
         ids: Iterable<String>,
         market: String? = null,
-    ): KorneaResult<List<SpotifyTrack>> =
+    ): KorneaResult<List<SpotifyTrack?>> =
         ids.chunkFlatToResults(50) { chunk -> getSeveralTracksJoined(chunk.joinToString(","), market) }
 
     public suspend fun getSeveralTracksJoined(
         idString: String,
         market: String? = null,
-    ): KorneaResult<List<SpotifyTrack>>
+    ): KorneaResult<List<SpotifyTrack?>>
 
     public suspend fun getUserSavedTracks(
         offset: Int? = null,
@@ -62,15 +62,15 @@ public interface SpotifyTrackService {
 
     public suspend fun checkUserSavedTracksJoined(idString: String): KorneaResult<List<Boolean>>
 
-    public suspend fun getSeveralTracksAudioFeatures(vararg ids: String): KorneaResult<List<SpotifyTrackAudioFeature>> =
+    public suspend fun getSeveralTracksAudioFeatures(vararg ids: String): KorneaResult<List<SpotifyTrackAudioFeatures>> =
         ids.chunkFlatToResults(50) { chunk -> getSeveralTracksAudioFeaturesJoined(chunk.joinToString(",")) }
 
-    public suspend fun getSeveralTracksAudioFeatures(ids: Iterable<String>): KorneaResult<List<SpotifyTrackAudioFeature>> =
+    public suspend fun getSeveralTracksAudioFeatures(ids: Iterable<String>): KorneaResult<List<SpotifyTrackAudioFeatures>> =
         ids.chunkFlatToResults(50) { chunk -> getSeveralTracksAudioFeaturesJoined(chunk.joinToString(",")) }
 
-    public suspend fun getSeveralTracksAudioFeaturesJoined(idString: String): KorneaResult<List<SpotifyTrackAudioFeature>>
+    public suspend fun getSeveralTracksAudioFeaturesJoined(idString: String): KorneaResult<List<SpotifyTrackAudioFeatures>>
 
-    public suspend fun getTrackAudioFeatures(id: String): KorneaResult<SpotifyTrackAudioFeature>
+    public suspend fun getTrackAudioFeatures(id: String): KorneaResult<SpotifyTrackAudioFeatures>
 
     public suspend fun getTrackAudioAnalysis(id: String): KorneaResult<SpotifyTrackAudioAnalysis>
 

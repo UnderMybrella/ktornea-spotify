@@ -1,7 +1,6 @@
 package dev.brella.ktornea.spotify.data
 
 import dev.brella.kornea.base.common.Optional
-import dev.brella.kornea.base.common.empty
 import dev.brella.ktornea.spotify.data.tracks.*
 import dev.brella.ktornea.spotify.testIfNotNullShouldBe
 import dev.brella.ktornea.spotify.testIfPresentShouldBe

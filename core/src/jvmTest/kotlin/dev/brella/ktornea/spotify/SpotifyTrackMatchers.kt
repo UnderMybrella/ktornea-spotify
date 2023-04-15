@@ -1,7 +1,6 @@
 package dev.brella.ktornea.spotify
 
 import dev.brella.kornea.base.common.Optional
-import dev.brella.kornea.base.common.of
 import dev.brella.ktornea.spotify.data.albums.SpotifyAlbum
 import dev.brella.ktornea.spotify.data.albums.SpotifySimplifiedArtist
 import dev.brella.ktornea.spotify.data.enums.EnumDatePrecision

@@ -6,7 +6,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-public data class SpotifyTrackAudioFeature(
+public data class SpotifyTrackAudioFeatures(
     /** A confidence measure from 0.0 to 1.0 of whether the track is acoustic.
      *  1.0 represents high confidence the track is acoustic. */
     val acousticness: Float,

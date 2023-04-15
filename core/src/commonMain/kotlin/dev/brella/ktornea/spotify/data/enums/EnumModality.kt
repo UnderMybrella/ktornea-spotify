@@ -8,10 +8,16 @@ import kotlinx.serialization.Serializable
 @Serializable(EnumModality.Serialiser::class)
 public sealed class EnumModality(override val type: Int) : KorneaNumericalEnum {
     //    public object
-    public object Major : EnumModality(0)
-    public object Minor : EnumModality(1)
+    public object Major : EnumModality(0) {
+        override fun toString(): String = "Major Key"
+    }
+    public object Minor : EnumModality(1) {
+        override fun toString(): String = "Minor Key"
+    }
 
-    public class Unknown(type: Int) : EnumModality(type)
+    public class Unknown(type: Int) : EnumModality(type) {
+        override fun toString(): String = "Unknown Key ($type)"
+    }
 
     public companion object Serialiser : KorneaNumericalEnumSerialiser.ArrayBased.AsByte<EnumModality>(lazyArray(2) {
         this[0] = Major
