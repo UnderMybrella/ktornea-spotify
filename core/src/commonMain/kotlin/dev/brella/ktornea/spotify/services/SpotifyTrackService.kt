@@ -62,13 +62,13 @@ public interface SpotifyTrackService {
 
     public suspend fun checkUserSavedTracksJoined(idString: String): KorneaResult<List<Boolean>>
 
-    public suspend fun getSeveralTracksAudioFeatures(vararg ids: String): KorneaResult<List<SpotifyTrackAudioFeatures>> =
+    public suspend fun getSeveralTracksAudioFeatures(vararg ids: String): KorneaResult<List<SpotifyTrackAudioFeatures?>> =
         ids.chunkFlatToResults(50) { chunk -> getSeveralTracksAudioFeaturesJoined(chunk.joinToString(",")) }
 
-    public suspend fun getSeveralTracksAudioFeatures(ids: Iterable<String>): KorneaResult<List<SpotifyTrackAudioFeatures>> =
+    public suspend fun getSeveralTracksAudioFeatures(ids: Iterable<String>): KorneaResult<List<SpotifyTrackAudioFeatures?>> =
         ids.chunkFlatToResults(50) { chunk -> getSeveralTracksAudioFeaturesJoined(chunk.joinToString(",")) }
 
-    public suspend fun getSeveralTracksAudioFeaturesJoined(idString: String): KorneaResult<List<SpotifyTrackAudioFeatures>>
+    public suspend fun getSeveralTracksAudioFeaturesJoined(idString: String): KorneaResult<List<SpotifyTrackAudioFeatures?>>
 
     public suspend fun getTrackAudioFeatures(id: String): KorneaResult<SpotifyTrackAudioFeatures>
 

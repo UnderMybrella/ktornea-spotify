@@ -1,6 +1,7 @@
 package dev.brella.ktornea.spotify.data.tracks.analysis
 
 import dev.brella.kornea.annotations.*
+import dev.brella.ktornea.spotify.data.enums.EnumModality
 import dev.brella.ktornea.spotify.data.enums.EnumPitchClass
 import dev.brella.ktornea.spotify.data.types.SpotifyHasTempo
 import kotlinx.serialization.SerialName
@@ -62,7 +63,7 @@ public data class SpotifyTrackAudioAnalysisSection(
      *
      *  This field will contain a 0 for "minor", a 1 for "major", or a -1 for no result.
      *  Note that the major key (e.g. C major) could more likely be confused with the minor key at 3 semitones lower (e.g. A minor) as both keys carry the same pitches. */
-    val mode: Double,
+    val mode: EnumModality,
 
     /** The confidence, from 0.0 to 1.0, of the reliability of the mode. */
     @SerialName("mode_confidence")

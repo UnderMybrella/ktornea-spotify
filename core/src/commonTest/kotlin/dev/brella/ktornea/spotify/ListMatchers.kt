@@ -1,35 +1,68 @@
 package dev.brella.ktornea.spotify
 
-import io.kotest.assertions.print.print
-import io.kotest.matchers.ComparableMatcherResult
 import io.kotest.matchers.Matcher
+import io.kotest.matchers.collections.atLeastSize
 import io.kotest.matchers.equalityMatcher
 
 @Suppress("UNCHECKED_CAST")
-public fun listShouldMatchExactly(single: Any?): Matcher<List<*>> {
+public fun listShouldMatchExactly(a: Any?): Matcher<List<*>> {
+    val sizeMatcher = atLeastSize<Any?>(1)
+
     val matcher =
-        if (single is Matcher<*>) single as Matcher<List<*>>
-        else equalityMatcher(single)
+        if (a is Matcher<*>) a as Matcher<Any?>
+        else equalityMatcher(a)
 
     return Matcher { value ->
-        when (val size = value.size) {
-            0 -> ComparableMatcherResult(
-                false,
-                { "${value.print().value} should not be empty" },
-                { "${value.print().value} should be empty" },
-                "0",
-                "1"
-            )
+        chainMatcherResults(
+            { sizeMatcher.test(value) },
+            { matcher.test(value[0]) }
+        )
+    }
+}
 
-            1 -> matcher.test(value)
+@Suppress("UNCHECKED_CAST")
+public fun listShouldMatchExactly(a: Any?, b: Any?): Matcher<List<*>> {
+    val sizeMatcher = atLeastSize<Any?>(2)
 
-            else -> ComparableMatcherResult(
-                false,
-                { "${value.print().value} should only have one element" },
-                { "${value.print().value} should not only have one element" },
-                size.toString(),
-                "1"
-            )
-        }
+    val a =
+        if (a is Matcher<*>) a as Matcher<Any?>
+        else equalityMatcher(a)
+
+    val b =
+        if (b is Matcher<*>) b as Matcher<Any?>
+        else equalityMatcher(b)
+
+    return Matcher { value ->
+        chainMatcherResults(
+            { sizeMatcher.test(value) },
+            { a.test(value[0]) },
+            { b.test(value[1]) }
+        )
+    }
+}
+
+@Suppress("UNCHECKED_CAST")
+public fun listShouldMatchExactly(a: Any?, b: Any?, c: Any?): Matcher<List<*>> {
+    val sizeMatcher = atLeastSize<Any?>(3)
+
+    val a =
+        if (a is Matcher<*>) a as Matcher<Any?>
+        else equalityMatcher(a)
+
+    val b =
+        if (b is Matcher<*>) b as Matcher<Any?>
+        else equalityMatcher(b)
+
+    val c =
+        if (c is Matcher<*>) c as Matcher<Any?>
+        else equalityMatcher(c)
+
+    return Matcher { value ->
+        chainMatcherResults(
+            { sizeMatcher.test(value) },
+            { a.test(value[0]) },
+            { b.test(value[1]) },
+            { c.test(value[2]) }
+        )
     }
 }

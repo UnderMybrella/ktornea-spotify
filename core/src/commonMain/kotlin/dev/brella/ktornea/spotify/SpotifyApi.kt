@@ -91,7 +91,7 @@ public class SpotifyApi(
             parameter("ids", idString)
         }.mapBodyOrError()
 
-    override suspend fun getSeveralTracksAudioFeaturesJoined(idString: String): KorneaResult<List<SpotifyTrackAudioFeatures>> =
+    override suspend fun getSeveralTracksAudioFeaturesJoined(idString: String): KorneaResult<List<SpotifyTrackAudioFeatures?>> =
         client.getResult("$apiUrl/audio-features") {
             setup()
 

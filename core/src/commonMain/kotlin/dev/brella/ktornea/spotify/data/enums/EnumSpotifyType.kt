@@ -15,7 +15,8 @@ public sealed class EnumSpotifyType(override val type: String) : KorneaStringEnu
     public object Compilation : EnumSpotifyType("compilation"), SpotifyAlbumType
     public object AppearsOn : EnumSpotifyType("appears_on"), SpotifyAlbumGroup
 
-    public object Artist : EnumSpotifyType("artist"), SpotifyArtistType
+    public object Artist : EnumSpotifyType("artist"), SpotifyArtistType, SpotifySeedType
+    public object Genre : EnumSpotifyType("genre"), SpotifySeedType
 
     public class Unknown(type: String) : EnumSpotifyType(type),
         SpotifyTypeOfTrack, SpotifyAudioFeatureType, SpotifySeedType,
@@ -29,7 +30,7 @@ public sealed class EnumSpotifyType(override val type: String) : KorneaStringEnu
 
             Album, Single, Compilation, AppearsOn,
 
-            Artist
+            Artist, Genre
         ).associateByTo(this, KorneaStringEnum::type)
     }, "EnumSpotifyType", EnumCaseSensitivity.LOWER_CASE, EnumCaseSensitivity.LOWER_CASE, default = ::Unknown)
 

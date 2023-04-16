@@ -52,19 +52,19 @@ public class SpotifyTrackRecommendationBuilder {
     public fun seedGenre(id: String): SpotifyTrackRecommendationBuilder =
         apply { seedGenres.add(id) }
 
-    public fun seedGenre(vararg ids: String): SpotifyTrackRecommendationBuilder =
+    public fun seedGenres(vararg ids: String): SpotifyTrackRecommendationBuilder =
         apply { seedGenres.addAll(ids) }
 
-    public fun seedGenre(ids: Iterable<String>): SpotifyTrackRecommendationBuilder =
+    public fun seedGenres(ids: Iterable<String>): SpotifyTrackRecommendationBuilder =
         apply { seedGenres.addAll(ids) }
 
     public fun seedTrack(id: String): SpotifyTrackRecommendationBuilder =
         apply { seedTracks.add(id) }
 
-    public fun seedTrack(vararg ids: String): SpotifyTrackRecommendationBuilder =
+    public fun seedTracks(vararg ids: String): SpotifyTrackRecommendationBuilder =
         apply { seedTracks.addAll(ids) }
 
-    public fun seedTrack(ids: Iterable<String>): SpotifyTrackRecommendationBuilder =
+    public fun seedTracks(ids: Iterable<String>): SpotifyTrackRecommendationBuilder =
         apply { seedTracks.addAll(ids) }
 
     public fun clear() {
@@ -103,3 +103,6 @@ public infix fun <T> SpotifyTrackRecommendationBuilder.Tunable<T>.between(range:
         this.min = range.start
         this.max = range.endInclusive
     }
+
+public inline fun buildSpotifyTrackRecommendationsRequest(build: SpotifyTrackRecommendationBuilder.() -> Unit): SpotifyTrackRecommendationBuilder =
+    SpotifyTrackRecommendationBuilder().apply(build)
