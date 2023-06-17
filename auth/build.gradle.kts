@@ -86,6 +86,8 @@ kotlin {
 //        val jsTest by getting
 
         val buildConstants = registerBuildConstantsTask("buildConstants") {
+            outputDirectory.set(File(project.buildDir, "generated/kornea"))
+
             gitCommitShortHash("GIT_COMMIT_SHORT_HASH")
             gitCommitHash("GIT_COMMIT_LONG_HASH")
             gitBranch("GIT_BRANCH")
