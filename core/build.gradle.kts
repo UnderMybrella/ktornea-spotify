@@ -105,6 +105,22 @@ kotlin {
 //        }
 //        val jsTest by getting
 
+        val buildConstants = registerBuildConstantsTask("buildConstants") {
+            gitCommitShortHash("GIT_COMMIT_SHORT_HASH")
+            gitCommitHash("GIT_COMMIT_LONG_HASH")
+            gitBranch("GIT_BRANCH")
+            gitCommitMessage("GIT_COMMIT_MESSAGE")
+            gradleVersion("GRADLE_VERSION")
+            gradleGroup("GRADLE_GROUP")
+            gradleName("GRADLE_NAME")
+            gradleDisplayName("GRADLE_DISPLAY_NAME")
+            gradleDescription("GRADLE_DESCRIPTION")
+            buildTimeEpoch("BUILD_TIME_EPOCH")
+            buildTimeUtcEpoch("BUILD_TIME_UTC_EPOCH")
+        }
+
+        commonMain.kotlin.srcDir(buildConstants)
+
         all {
             languageSettings.apply {
                 optIn("kotlin.RequiresOptIn")
@@ -112,24 +128,4 @@ kotlin {
             }
         }
     }
-}
-
-val buildConstants = registerBuildConstantsTask("buildConstants") {
-    setOutputInSourceSet(kotlin.sourceSets.getByName("commonMain").kotlin)
-
-    gitCommitShortHash("GIT_COMMIT_SHORT_HASH")
-    gitCommitHash("GIT_COMMIT_LONG_HASH")
-    gitBranch("GIT_BRANCH")
-    gitCommitMessage("GIT_COMMIT_MESSAGE")
-    gradleVersion("GRADLE_VERSION")
-    gradleGroup("GRADLE_GROUP")
-    gradleName("GRADLE_NAME")
-    gradleDisplayName("GRADLE_DISPLAY_NAME")
-    gradleDescription("GRADLE_DESCRIPTION")
-    buildTimeEpoch("BUILD_TIME_EPOCH")
-    buildTimeUtcEpoch("BUILD_TIME_UTC_EPOCH")
-}
-
-tasks.withType<KotlinCommonCompile>() {
-    dependsOn(buildConstants)
 }
